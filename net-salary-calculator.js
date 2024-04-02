@@ -1,79 +1,47 @@
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+// calculates the net salary of an employee
+function calculateNetSalary(basicSalary, benefits) {
 
-readline.question("What is your salary", (salary) => {
-  //Variables
-  let paye = 0;
-  let nhif = 0;
-  let nssf = 0;
+  
+  const taxRate = 0.2
+ 
+  const nhifRate = 0.1
+ 
+  const nssfRate = 0.2
 
-  if (salary <= 24000) {
-    paye = (10 / 100) * salary;
-  } else if (salary >= 24000 && salary < 32333) {
-    paye = (25 / 100) * salary;
-  } else if (salary >= 32334 && salary < 500000) {
-    paye = (30 / 100) * salary;
-  } else if (salary >= 500001 && salary < 800000) {
-    paye = (32 / 100) * salary;
-  } else if (salary >= 800000) {
-    paye = (35 / 100) * salary;
-  }
+  // Calculate gross salary 
+  const grossSalary = basicSalary + benefits;
 
-  //////////nhif
-  if (salary < 5999) {
-    nhif = 150;
-  } else if (salary >= 6000 && salary < 7999) {
-    nhif = 300;
-  } else if (salary >= 8000 && salary < 11999) {
-    nhif = 400;
-  } else if (salary >= 12000 && salary < 14999) {
-    nhif = 500;
-  } else if (salary >= 15000 && salary < 19999) {
-    nhif = 600;
-  } else if (salary >= 20000 && salary < 24999) {
-    nhif = 750;
-  } else if (salary >= 25000 && salary < 29999) {
-    nhif = 850;
-  } else if (salary >= 30000 && salary < 34999) {
-    nhif = 900;
-  } else if (salary >= 35000 && salary < 39999) {
-    nhif = 950;
-  } else if (salary >= 40000 && salary < 44999) {
-    nhif = 1000;
-  } else if (salary >= 45000 && salary < 49999) {
-    nhif = 1100;
-  } else if (salary >= 50000 && salary < 59999) {
-    nhif = 1200;
-  } else if (salary >= 60000 && salary < 69999) {
-    nhif = 1300;
-  } else if (salary >= 70000 && salary < 79999) {
-    nhif = 1400;
-  } else if (salary >= 80000 && salary < 89999) {
-    nhif = 15000;
-  } else if (salary >= 90000 && salary < 99999) {
-    nhif = 1600;
-  } else if (salary >= 100000) {
-    nhif = 1700;
-  }
-  ///////////nssf
+  // Calculate tax by multiplying gross salary with tax rate
+  const tax = grossSalary * taxRate;
+  // Calculate NHIF deductions by multiplying gross salary with NHIF rate
+  const nhif = grossSalary * nhifRate;
+  // Calculate NSSF deductions by multiplying gross salary with NSSF rate
+  const nssf = grossSalary * nssfRate;
 
-  let nssf2 = (6 / 100) * salary;
+  // Calculate net salary by subtracting tax, NHIF, and NSSF deductions from gross salary
+  const netSalary = grossSalary - (tax + nhif + nssf);
 
-  if (nssf2 <= 7000) {
-    nssf = nssf2;
-  } else {
-    nssf = 7000;
-  }
+  // Return an object containing all the calculated values
+  return {
+    grossSalary, 
+    tax, 
+    nhif, 
+    nssf, 
+    netSalary 
+  };
+}
 
-  var netSalary = salary - paye - nhif - nssf;
+// Set basic salary and benefits for an employee
+const basicSalary = 59000; 
+const benefits = 4500; 
 
-  console.log("Paye", paye);
-  console.log("NHIF", nhif);
-  console.log("NSSF", nssf);
-  console.log("NET SALARY", netSalary);
+// Calculate net salary 
+const result = calculateNetSalary(basicSalary, benefits);
 
-  //Close
-  readline.close();
-});
+// Printing the results
+console.log("Net Salary Calculation Results:");
+console.log("Gross Salary:", result.grossSalary); 
+console.log("Tax:", result.tax); 
+console.log("NHIF Deductions:", result.nhif);
+console.log("NSSF Deductions:", result.nssf); 
+console.log("Net Salary:", result.netSalary); 
